@@ -70,6 +70,18 @@ jobs:
           command: |
             npm i
             npm run test
+  scan_backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: Scan backend
+          command: |
+            cd backend
+            npm i
+            npm run scan
+            
 
   test_frontend:
     docker:
@@ -338,3 +350,6 @@ workflows:
       - test_backend:
           requires:
             - build_backend
+      - scan_backend:
+          requires:
+            - test_backend
