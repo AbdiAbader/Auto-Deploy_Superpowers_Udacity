@@ -196,23 +196,7 @@ commands:
           name: Installing ansible
           command: |
             sudo add-apt-repository --yes --update ppa:ansible/ansible
-            sudo apt install ansible
-  destroy-environment:
-    parameters:
-      workflow_id: Install dependencies
-          command: |
-            # your code here
-      - run:
-          name: Get backend url
-          command: |
-            # your code here
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-      - run:
-          name: Deploy frontend objects
-          command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure      
+            sudo apt install ansible   
                     
   deploy-backend:
     docker:
