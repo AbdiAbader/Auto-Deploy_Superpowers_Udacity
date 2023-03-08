@@ -57,7 +57,7 @@ jobs:
           paths:
             - project/frontend/node_modules
 
-  test-backend:
+  test_backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
