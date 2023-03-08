@@ -57,12 +57,17 @@ jobs:
           paths:
             - project/frontend/node_modules
 
-  test_backend:
+  test-backend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      command: |
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: test-backend
+          working_directory: ./backend
+          command: |
             npm i
             npm run test
 
