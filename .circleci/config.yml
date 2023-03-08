@@ -62,10 +62,9 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
-      - run: npm i --prefix backend
-      - run: npm run test --prefix backend
+      command: |
+            npm i
+            npm run test
 
   test_frontend:
     docker:
@@ -331,3 +330,6 @@ workflows:
   my_workflow:
     jobs:
       - build_backend
+      - test_backend:
+          requires:
+            - build_backend
