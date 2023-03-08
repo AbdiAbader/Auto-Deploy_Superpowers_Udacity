@@ -325,7 +325,4 @@ jobs:
 workflows:
   my_workflow:
     jobs:
-      - build_backend:
-          filters:
-            branches:
-              only: master
+      - build_backend
