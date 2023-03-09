@@ -318,7 +318,7 @@ jobs:
 
   deploy_cloudfront_infrastructure:
     docker:
-      - image: amazon/aws-cli:2.0.0
+      - image: amazon/aws-cli
     environment:
       AWS_DEFAULT_REGION: us-east-1
     steps:
