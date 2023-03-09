@@ -341,7 +341,7 @@ workflows:
       #- test_backend:
       #    requires:
       #     - build_backend
-      - scan_backend:
-          requires:
-            - test_backend
+      #- scan_backend:
+      #    requires:
+      #      - test_backend
       - deploy_cloudfront_infrastructure
