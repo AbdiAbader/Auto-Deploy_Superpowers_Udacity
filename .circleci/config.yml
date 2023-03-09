@@ -319,6 +319,8 @@ jobs:
   deploy_cloudfront_infrastructure:
     docker:
       - image: cimg/base:2021.04
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
     steps:
       - checkout
       - dependencies
