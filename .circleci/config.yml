@@ -100,10 +100,9 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: cimg/base:2021.04
+      - image: circleci/node:13.8.0
     steps:
       - checkout
-      - dependencies
       # Checkout code from git
       - run:
           name: Ensure back-end infrastructure exists
