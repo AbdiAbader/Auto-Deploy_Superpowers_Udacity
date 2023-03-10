@@ -275,7 +275,7 @@ jobs:
             # Your code here
             cd .circleci/ansible
             cat inventory.txt
-            ansible-playbook -i inventory.txt configure-server.yml
+            ansible-playbook -i inventory.txt roles/configure-server.yml
       
       - destroy-environment
 
