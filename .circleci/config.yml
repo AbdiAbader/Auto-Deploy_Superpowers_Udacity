@@ -477,10 +477,9 @@ workflows:
   default:
     jobs:
 
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      - deploy-frontend
+      - deploy-backend
+
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
