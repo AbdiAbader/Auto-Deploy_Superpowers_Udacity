@@ -476,7 +476,7 @@ jobs:
 workflows:
   default:
     jobs:
-
+      - run-migrations
       - deploy-frontend
       - deploy-backend
 
