@@ -208,8 +208,10 @@ jobs:
 
   deploy-infrastructure:
     docker:
+      # Docker image here that supports AWS CLI
       - image: amazon/aws-cli
     steps:
+      # Checkout code from git
       - checkout
       - run:
          name: Install dependencies
@@ -217,13 +219,14 @@ jobs:
           yum install -y tar gzip
           
       - run:
-          name: back-end infrastructure exists
+          name: Ensure back-end infrastructure exists
           command: |
-              aws cloudformation deploy \
+            # Use the workflow id to mark your CloudFormation stacks so that you can reference them later on (ex: rollback). 
+            aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-    
+              --tags project=udapeople
                          
       - run:
           name: Ensure front-end infrastructure exist
@@ -233,7 +236,8 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-             
+              --tags project=udapeople
+            
               
       - run:
           name: Add back-end ip to ansible inventory
@@ -264,7 +268,7 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
          fingerprints:
-          - "70:f8:ab:4a:2a:93:47:58:18:db:0f:fe:1f:4e:6c:e3"
+          - "cd:89:5c:73:e4:8e:b0:8f:8c:68:ab:b6:c5:b7:81:57"
       - attach_workspace:
           at: ~/
 
@@ -476,10 +480,31 @@ jobs:
 workflows:
   default:
     jobs:
-      - run-migrations
-      - deploy-frontend
-      - deploy-backend
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [main]
+              # only: [test-feature-branch]
 
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
